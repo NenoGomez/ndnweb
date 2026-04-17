@@ -1,11 +1,96 @@
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'motion/react';
 import { 
   Menu, X, ChevronRight, Phone, Mail, MapPin, 
   Globe, MonitorSmartphone, PenTool, LayoutTemplate,
   MessageCircle, ArrowUpRight, ShieldCheck, Zap,
-  Layers, ExternalLink, CheckCircle2
+  Layers, ExternalLink, CheckCircle2, Quote
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+
+function ProjectCard({ project, idx }: { project: any; idx: number }) {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Smooth out the motion values using physics-based springs
+  const springX = useSpring(mouseX, { stiffness: 150, damping: 25, mass: 0.5 });
+  const springY = useSpring(mouseY, { stiffness: 150, damping: 25, mass: 0.5 });
+
+  // Transform the normalized -0.5 to 0.5 values into pixel movement (opposing the mouse)
+  // Increased intensity from 30px to 50px for a more pronounced parallax feel
+  const imageX = useTransform(springX, [-0.5, 0.5], [50, -50]);
+  const imageY = useTransform(springY, [-0.5, 0.5], [50, -50]);
+
+  // Scale value that slightly increases on hover to prevent edges from showing during parallax
+  const scale = useMotionValue(1);
+  const springScale = useSpring(scale, { stiffness: 200, damping: 20 });
+
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - left) / width - 0.5;
+    const y = (e.clientY - top) / height - 0.5;
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+
+  const handleMouseEnter = () => {
+    scale.set(1.2); // Increased scale to accommodate larger parallax displacement
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+    scale.set(1);
+  };
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ delay: idx * 0.1, duration: 0.7, ease: "easeOut" }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="group relative rounded-3xl overflow-hidden bg-zinc-900 border border-white/5 cursor-pointer block hover:-translate-y-2 transition-all duration-500 shadow-2xl hover:shadow-yellow-500/10 flex flex-col h-full"
+    >
+      <div className="aspect-[4/3] overflow-hidden relative border-b border-white/10">
+        <motion.img 
+          src={project.img} 
+          alt={`Mockup projeto ${project.title}`}
+          loading="lazy"
+          decoding="async" 
+          style={{
+            x: imageX,
+            y: imageY,
+            scale: springScale
+          }}
+          className="w-full h-full object-cover origin-center" 
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/40 to-transparent opacity-80 group-hover:opacity-20 transition-opacity duration-700 pointer-events-none" />
+        
+        {/* Hover Overlay Detail */}
+        <div className="absolute top-5 right-5 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
+          <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-black shadow-lg">
+            <ArrowUpRight className="w-6 h-6" />
+          </div>
+        </div>
+      </div>
+      
+      <div className="p-8 relative z-10 bg-[#0a0a0a] group-hover:bg-[#0f0f0f] transition-colors duration-500 flex-grow flex flex-col">
+        <p className="text-yellow-500 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] mb-3">{project.category}</p>
+        <h3 className="text-xl sm:text-2xl font-light text-white mb-5">{project.title}</h3>
+        <div className="mt-auto">
+          <p className="inline-flex items-center px-4 py-2 bg-yellow-500/10 border border-yellow-500/20 rounded-full text-zinc-300 text-xs shadow-sm font-medium">
+            <CheckCircle2 className="w-3.5 h-3.5 text-yellow-500 mr-2" />
+            {project.desc}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -494,44 +579,7 @@ export default function App() {
                   img: "https://images.unsplash.com/photo-1616469829941-c7200edec809?q=80&w=800&auto=format&fit=crop" 
                 }
               ].map((project, idx) => (
-                <motion.div 
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ delay: idx * 0.1, duration: 0.7, ease: "easeOut" }}
-                  className="group relative rounded-3xl overflow-hidden bg-zinc-900 border border-white/5 cursor-pointer block hover:-translate-y-2 transition-all duration-500 shadow-2xl hover:shadow-yellow-500/10 flex flex-col h-full"
-                >
-                  <div className="aspect-[4/3] overflow-hidden relative border-b border-white/10">
-                    <img 
-                      src={project.img} 
-                      alt={`Mockup projeto ${project.title}`}
-                      loading="lazy"
-                      decoding="async" 
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]" 
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/40 to-transparent opacity-80 group-hover:opacity-20 transition-opacity duration-700" />
-                    
-                    {/* Hover Overlay Detail */}
-                    <div className="absolute top-5 right-5 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                      <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center text-black shadow-lg hover:scale-110 transition-transform">
-                        <ArrowUpRight className="w-6 h-6" />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="p-8 relative z-10 bg-[#0a0a0a] group-hover:bg-[#0f0f0f] transition-colors duration-500 flex-grow flex flex-col">
-                    <p className="text-yellow-500 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] mb-3">{project.category}</p>
-                    <h3 className="text-xl sm:text-2xl font-light text-white mb-5">{project.title}</h3>
-                    <div className="mt-auto">
-                      <p className="inline-flex items-center px-4 py-2 bg-yellow-500/10 border border-yellow-500/20 rounded-full text-zinc-300 text-xs shadow-sm font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-yellow-500 mr-2" />
-                        {project.desc}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
+                <ProjectCard key={idx} project={project} idx={idx} />
               ))}
             </div>
 
@@ -545,6 +593,74 @@ export default function App() {
                 <span className="font-extrabold tracking-normal"><Globe className="inline-block mb-1 w-4 h-4 mr-1 text-orange-600"/>BFA</span>
                 <span className="font-medium tracking-widest"><ShieldCheck className="inline-block mb-1 w-4 h-4 mr-1 text-blue-500"/>ENSA</span>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Depoimentos / Testimonials */}
+        <section id="depoimentos" className="py-24 border-y border-white/5 bg-[#050505] relative overflow-hidden">
+          {/* Subtle background glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-yellow-500/5 rounded-full blur-[150px] mix-blend-screen pointer-events-none" />
+          
+          <div className="container mx-auto px-6 max-w-7xl relative z-10">
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-center max-w-2xl mx-auto mb-20"
+            >
+              <p className="text-xs uppercase tracking-[0.2em] text-zinc-500 mb-4">Reconhecimento</p>
+              <h2 className="text-4xl md:text-5xl font-light tracking-tight">O que dizem os nossos <span className="font-semibold text-yellow-500">Parceiros</span>.</h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  quote: "A transformação digital que a NDN operou na nossa rede foi fenomenal. O website é impressionante e o tráfego quadruplicou num trimestre.",
+                  name: "Carlos Matos",
+                  role: "Diretor de Marketing, Loja KwanzaShop",
+                  image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop"
+                },
+                {
+                  quote: "Desde a sinalética no nosso edifício ao design do portal interno. Uma equipa incansável e com um brio profissional acima da média em Luanda.",
+                  name: "Helena Fernando",
+                  role: "Diretora Operacional, Corporativo",
+                  image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop"
+                },
+                {
+                  quote: "Captaram a essência exata do nosso negócio. O menu digital tem gerado elogios frequentes de todos os nossos clientes diários.",
+                  name: "João Silva",
+                  role: "Fundador, Bistro Luanda Central",
+                  image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=200&auto=format&fit=crop"
+                }
+              ].map((testimonial, idx) => (
+                <motion.div 
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: 0.2 * idx, ease: "easeOut" }}
+                  className="p-8 md:p-10 rounded-3xl bg-zinc-900/40 border border-white/5 hover:bg-zinc-900/80 hover:border-white/10 transition-colors flex flex-col h-full group cursor-default"
+                >
+                  <Quote className="w-10 h-10 text-yellow-500/20 mb-6 group-hover:text-yellow-500/40 transition-colors" />
+                  <p className="text-zinc-300 text-lg md:text-xl font-light leading-relaxed mb-10 italic flex-grow">
+                    "{testimonial.quote}"
+                  </p>
+                  <div className="flex items-center gap-4 mt-auto">
+                    <img 
+                      src={testimonial.image} 
+                      alt={`Retrato de ${testimonial.name}`} 
+                      className="w-14 h-14 rounded-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 border border-white/10"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div>
+                      <p className="text-white font-medium text-sm">{testimonial.name}</p>
+                      <p className="text-yellow-500/80 text-xs tracking-wide uppercase mt-1">{testimonial.role}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
@@ -563,8 +679,17 @@ export default function App() {
               className="mb-24 rounded-3xl overflow-hidden border border-white/10 h-[400px] w-full relative grayscale hover:grayscale-0 transition-all duration-700 isolate group"
             >
               {/* Optional overlay to keep it strictly dark until hovered */}
-              <div className="absolute inset-0 bg-[#0a0a0a] pointer-events-none mix-blend-color z-10 opacity-100 group-hover:opacity-0 transition-opacity duration-700" />
-              <div className="absolute inset-0 bg-yellow-500/5 pointer-events-none z-10 mix-blend-overlay group-hover:opacity-0 transition-opacity duration-700" />
+              <div className="absolute inset-0 bg-[#0a0a0a]/60 pointer-events-none z-10 group-hover:opacity-0 transition-opacity duration-700" />
+              <div className="absolute inset-0 bg-yellow-500/10 pointer-events-none z-10 mix-blend-overlay group-hover:opacity-0 transition-opacity duration-700" />
+              
+              {/* Interaction Label */}
+              <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none group-hover:opacity-0 transition-opacity duration-700">
+                <span className="bg-black/70 text-zinc-300 text-xs font-semibold uppercase tracking-[0.15em] px-6 py-3 rounded-full backdrop-blur-sm border border-white/10 shadow-xl flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+                  Clique para interagir
+                </span>
+              </div>
+
               <iframe 
                 src="https://maps.google.com/maps?q=Mutamba,%20Luanda,%20Angola&t=&z=14&ie=UTF8&iwloc=&output=embed" 
                 width="100%" 
