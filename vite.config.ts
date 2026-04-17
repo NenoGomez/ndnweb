@@ -23,3 +23,7 @@ export default defineConfig(({mode}) => {
     },
   };
 });
+export default {
+  base: '/ndnweb/',
+  // ... resto da config
+}
