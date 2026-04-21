@@ -1,30 +1,474 @@
-<!doctype html>
-<html lang="pt-PT">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- SEO Título Melhorado -->
-    <title>NDN - Agência Digital e Prestação de Serviços em Angola</title>
-    
-    <!-- Básicas de SEO (Inserindo também referências ao telefone e email) -->
-    <meta name="description" content="A NDN é especialista em design, desenvolvimento de websites, campanhas de marketing e assistência técnica em Angola. Fale connosco: 954 359 159 ou ndngeral@gmail.com." />
-    <meta name="keywords" content="agência digital angola, criação de sites luanda, publicidade em angola, marketing digital angola, web design, NDN prestação de serviços, software corporativo" />
-    <meta name="author" content="NDN - Prestação de Serviços" />
-    
-    <!-- Open Graph / Redes Sociais -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="NDN - Inovação e Prestação de Serviços Tecnológicos" />
-    <meta property="og:description" content="Eleve a sua marca com soluções digitais de topo. Websites, Marketing de Resultados e Apoio Tecnológico dedicado." />
-    <meta property="og:url" content="https://nenogomez.github.io/ndnweb/" />
-    <meta property="og:image" content="https://nenogomez.github.io/ndnweb/favicon.svg" />
-    <meta property="og:site_name" content="NDN Services" />
+<!DOCTYPE html>
+<html lang="pt-PT" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>NDN - Agência Digital e Prestação de Serviços em Angola</title>
+  <meta name="description" content="A NDN é especialista em design, desenvolvimento de websites, campanhas de marketing e assistência técnica em Angola. Fale connosco: 954 359 159 ou ndngeral@gmail.com.">
+  <meta name="keywords" content="agência digital angola, criação de sites luanda, publicidade em angola, marketing digital angola, web design, NDN prestação de Serviços">
+  
+  <meta property="og:title" content="NDN - Inovação e Prestação de Serviços Tecnológicos">
+  <meta property="og:description" content="Eleve a sua marca com soluções digitais de topo. Websites, Marketing de Resultados e Apoio Tecnológico dedicado.">
+  <meta property="og:image" content="https://nenogomez.github.io/ndnweb/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="./src/main.tsx"></script>
-  </body>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+    body {
+      background-color: #050505;
+      color: #f4f4f5;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    ::selection {
+      background-color: rgba(234, 179, 8, 0.3);
+      color: #fef08a;
+    }
+
+    /* Animações CSS p/ substituir Framer Motion */
+    .fade-in-up { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+    .fade-in-left { opacity: 0; transform: translateX(-30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+    .fade-in-right { opacity: 0; transform: translateX(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+    .scale-in { opacity: 0; transform: scale(0.95); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+    
+    .is-visible { opacity: 1; transform: translate(0, 0) scale(1); }
+    
+    #hero-image { transition: opacity 1.5s ease-in-out; }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- Navbar -->
+  <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent py-6">
+    <div class="container mx-auto px-6 max-w-7xl flex items-center justify-between">
+      <a href="#hero" class="flex items-center gap-2 cursor-pointer">
+        <div class="w-8 h-8 bg-yellow-500 rounded-sm flex items-center justify-center text-black font-bold text-xl">N</div>
+        <span class="font-semibold tracking-wider uppercase text-sm hidden sm:block">NDN - Prestação de Serviços</span>
+      </a>
+
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="#sobre" class="text-xs uppercase tracking-[0.15em] hover:text-yellow-500 transition-colors">Sobre Nós</a>
+        <a href="#servicos" class="text-xs uppercase tracking-[0.15em] hover:text-yellow-500 transition-colors">Serviços & Pacotes</a>
+        <a href="#portfolio" class="text-xs uppercase tracking-[0.15em] hover:text-yellow-500 transition-colors">Portfólio</a>
+        <a href="#contactos" class="border border-white/20 hover:border-yellow-500 hover:text-yellow-500 rounded-full px-6 py-2 text-xs uppercase tracking-widest transition-all">Pedir Orçamento</a>
+      </div>
+
+      <button id="mobile-menu-btn" class="md:hidden text-zinc-300 ml-auto">
+        <i data-lucide="menu" id="mobile-menu-icon" class="w-6 h-6"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-[#0a0a0a] border-b border-white/10 flex-col p-6 space-y-6 shadow-xl">
+      <a href="#sobre" class="text-sm uppercase tracking-[0.1em] text-left text-zinc-300">Sobre Nós</a>
+      <a href="#servicos" class="text-sm uppercase tracking-[0.1em] text-left text-zinc-300">Serviços & Pacotes</a>
+      <a href="#portfolio" class="text-sm uppercase tracking-[0.1em] text-left text-zinc-300">Portfólio</a>
+      <a href="#contactos" class="text-sm uppercase tracking-[0.1em] text-left text-yellow-500 font-bold mt-4">Contactos</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden bg-[#020202]">
+      <div class="absolute inset-0 z-0">
+        <img id="hero-image" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2000&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover mix-blend-luminosity contrast-125 opacity-35" alt="Tech bg" crossorigin="anonymous">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/70 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-[#050505]/90 via-transparent to-[#050505]/90"></div>
+        <div class="absolute top-1/4 -right-1/4 w-[800px] h-[800px] bg-yellow-500/15 rounded-full blur-[130px] mix-blend-screen"></div>
+        <div class="absolute -bottom-1/4 -left-1/4 w-[600px] h-[600px] bg-zinc-700/40 rounded-full blur-[100px] mix-blend-screen"></div>
+      </div>
+
+      <div class="container mx-auto px-6 max-w-7xl relative z-10 fade-in-up">
+        <div class="max-w-4xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 border border-yellow-500/30 rounded-full bg-yellow-500/10 text-yellow-500 mb-8">
+            <span class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></span>
+            <span class="text-xs uppercase tracking-widest font-medium">Líderes no Mercado Angolano</span>
+          </div>
+          
+          <h1 class="text-5xl sm:text-7xl md:text-[6.5vw] font-light leading-[1] tracking-tighter mb-8 text-white">
+            Transformar marcas.<br> 
+            <span class="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-200">
+              Dominar o mercado.
+            </span>
+          </h1>
+          
+          <p class="text-lg md:text-xl text-zinc-400 max-w-2xl font-light leading-relaxed mb-10">
+            A NDN - Prestação de Serviços eleva a sua empresa com impressão de grande formato, sinalética premium e a derradeira presença digital 360º em Luanda.
+          </p>
+          
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 border-l border-white/20 pl-6">
+            <a href="#servicos" class="bg-white text-black px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-wider hover:bg-yellow-500 transition-colors flex items-center gap-2">
+              Ver Pacotes <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            </a>
+            <a href="#contactos" class="text-sm uppercase tracking-widest text-zinc-400 hover:text-white transition-colors py-4 px-2 sm:px-0">
+              Falar com um Consultor
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sobre Section -->
+    <section id="sobre" class="py-32 bg-[#0a0a0a] relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-full h-px bg-gradient-to-r from-transparent via-yellow-500/20 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-yellow-500/5 rounded-full blur-[100px]"></div>
+      
+      <div class="container mx-auto px-6 max-w-7xl relative z-10">
+        <div class="grid lg:grid-cols-2 gap-16 md:gap-24 items-center">
+          
+          <div class="relative fade-in-left">
+            <div class="aspect-[4/5] rounded-3xl overflow-hidden bg-zinc-900 border border-white/10 relative group shadow-2xl">
+              <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 transition-transform duration-1000 hover:scale-105" alt="Corporate Business">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/50 to-transparent"></div>
+              
+              <div class="absolute top-10 -right-4 bg-black/60 backdrop-blur-md border border-white/10 p-5 rounded-2xl hidden lg:flex items-center gap-4 shadow-2xl">
+                <div class="w-12 h-12 rounded-full bg-yellow-500/20 flex items-center justify-center">
+                  <i data-lucide="monitor-smartphone" class="w-5 h-5 text-yellow-500"></i>
+                </div>
+                <div>
+                  <p class="text-[10px] uppercase tracking-widest text-zinc-400">Desenvolvimento</p>
+                  <p class="text-sm font-bold text-white">Web & App</p>
+                </div>
+              </div>
+
+              <div class="absolute bottom-10 left-10 z-10">
+                <div class="w-16 h-16 bg-yellow-500 rounded-2xl flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(234,179,8,0.3)]">
+                   <i data-lucide="layers" class="w-8 h-8 text-black"></i>
+                </div>
+                <p class="text-xs uppercase tracking-[0.2em] text-yellow-500 mb-2 font-semibold">Fundador & CEO</p>
+                <p class="text-3xl font-light text-white flex items-center gap-2">Eng.º Nino Ferreira</p>
+              </div>
+            </div>
+            <div class="absolute -inset-4 border border-white/5 rounded-[2.5rem] -z-10 hidden md:block"></div>
+          </div>
+
+          <div class="fade-in-up">
+            <p class="text-xs uppercase tracking-[0.2em] text-yellow-500 mb-4 font-semibold flex items-center gap-3">
+              <span class="w-8 h-[1px] bg-yellow-500"></span>
+              Sobre a Empresa
+            </p>
+            <h2 class="text-4xl md:text-5xl font-light tracking-tight mb-8 leading-[1.1]">
+              A ponte entre a sua <br>
+              <span class="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-500">estrutura física</span> e o <br>
+              <span class="italic font-serif text-yellow-500">domínio digital</span>.
+            </h2>
+            
+            <div class="space-y-6 text-zinc-400 font-light leading-relaxed text-lg mb-12">
+              <p>Com bases operacionais consolidadas na Mutamba e no Zango 3, a <strong>NDN - Prestação de Serviços</strong> construiu um legado invejável na produção de sinalética premium e impressão gráfica em Luanda.</p>
+              <p>Mas o mercado exigiu mais, e nós evoluímos. Especializámo-nos no desenvolvimento de software e soluções digitais avançadas para oferecer um <span class="text-white font-medium">Ecossistema 360º de Branding</span>.</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-8 pt-10 border-t border-white/10">
+              <div>
+                <h4 class="text-4xl font-light text-white mb-2">15+</h4>
+                <p class="text-sm text-zinc-400 font-medium tracking-wide">Marcas Elevadas</p>
+              </div>
+              <div>
+                <h4 class="text-4xl font-light text-white mb-2">360º</h4>
+                <p class="text-sm text-zinc-400 font-medium tracking-wide">Solução Física & Tech</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Services / Packages Section -->
+    <section id="servicos" class="py-24 bg-[#050505]">
+      <div class="container mx-auto px-6 max-w-7xl">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 fade-in-up">
+          <div>
+            <p class="text-xs uppercase tracking-[0.2em] text-zinc-500 mb-4">Investimento</p>
+            <h2 class="text-4xl md:text-5xl font-light tracking-tight">Pacotes <span class="font-semibold text-yellow-500">Digitais</span>.</h2>
+          </div>
+          <p class="text-zinc-500 text-sm max-w-md">Soluções feitas à medida do empresário focado em resultados rápidos e posicionamento premium no mercado.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <!-- Pacote 1 -->
+          <div class="p-8 rounded-3xl border border-white/10 bg-[#0a0a0a] flex flex-col fade-in-up delay-100">
+            <div class="mb-6 flex items-center gap-3 text-zinc-400">
+              <i data-lucide="layout-template" class="w-5 h-5"></i>
+              <span class="text-xs uppercase tracking-widest">Para Iniciantes</span>
+            </div>
+            <h3 class="text-2xl mb-2 text-white">Pacote Digital Start</h3>
+            <p class="text-zinc-500 text-sm min-h-[40px] mb-6">Aterragem rápida e eficaz, ideal para pequenos negócios.</p>
+            
+            <p class="text-3xl font-light text-white mb-8">150.000 <span class="text-lg text-zinc-500">Kz</span></p>
+
+            <ul class="space-y-4 text-sm text-zinc-400 mb-10 flex-grow">
+              <li class="flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4 text-yellow-500"></i> Website Landing Page</li>
+              <li class="flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4 text-yellow-500"></i> Menu / Catálogo Digital</li>
+              <li class="flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4 text-yellow-500"></i> Design Responsivo</li>
+            </ul>
+
+            <a href="#contactos" class="text-center w-full py-3 rounded-full border border-white/20 hover:bg-white hover:text-black transition-colors text-sm uppercase tracking-wider block">Selecionar Start</a>
+          </div>
+
+          <!-- Pacote 2 -->
+          <div class="p-8 rounded-3xl border border-yellow-500/50 bg-gradient-to-b from-[#111] to-[#050505] relative flex flex-col fade-in-up delay-200">
+            <div class="absolute top-0 right-8 -translate-y-1/2 bg-yellow-500 text-black px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">Mais Popular</div>
+            <div class="mb-6 flex items-center gap-3 text-yellow-500">
+              <i data-lucide="globe" class="w-5 h-5"></i>
+              <span class="text-xs uppercase tracking-widest text-zinc-300">PME & Corporativo</span>
+            </div>
+            <h3 class="text-2xl mb-2 text-white">Pacote Business Pro</h3>
+            <p class="text-zinc-400 text-sm min-h-[40px] mb-6">O portal definitivo para credibilidade e gestão constante.</p>
+            
+            <p class="text-3xl font-semibold text-white mb-8">450.000 <span class="text-lg text-zinc-500">Kz</span></p>
+
+            <ul class="space-y-4 text-sm text-zinc-300 mb-10 flex-grow">
+              <li class="flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4 text-yellow-500"></i> Site Multi-Páginas</li>
+              <li class="flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4 text-yellow-500"></i> Gestão de SEO Avançado</li>
+              <li class="flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4 text-yellow-500"></i> Agendamentos Integrados</li>
+              <li class="flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4 text-yellow-500"></i> Emails Corporativos</li>
+            </ul>
+
+            <a href="#contactos" class="text-center w-full py-3 rounded-full bg-yellow-500 text-black font-medium hover:bg-white hover:text-black transition-colors text-sm uppercase tracking-wider block">Elevar Negócio</a>
+          </div>
+
+          <!-- Pacote 3 -->
+          <div class="p-8 rounded-3xl border border-white/10 bg-[#0a0a0a] flex flex-col fade-in-up delay-300">
+            <div class="mb-6 flex items-center gap-3 text-zinc-400">
+              <i data-lucide="pen-tool" class="w-5 h-5"></i>
+              <span class="text-xs uppercase tracking-widest">360º Completo</span>
+            </div>
+            <h3 class="text-2xl mb-2 text-white">Branding Total</h3>
+            <p class="text-zinc-500 text-sm min-h-[40px] mb-6">Unificação massiva. Desde a sinalética física ao web.</p>
+            
+            <p class="text-3xl font-light text-white mb-8">Sob Orçamento</p>
+
+            <ul class="space-y-4 text-sm text-zinc-400 mb-10 flex-grow">
+              <li class="flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4 text-yellow-500"></i> Tudo no Business Pro</li>
+              <li class="flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4 text-yellow-500"></i> Sinalética & Luminosos</li>
+              <li class="flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4 text-yellow-500"></i> Identidade Visual Completa</li>
+            </ul>
+
+            <a href="#contactos" class="text-center w-full py-3 rounded-full border border-white/20 hover:bg-white hover:text-black transition-colors text-sm uppercase tracking-wider block">Falar Connosco</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section id="depoimentos" class="py-24 border-y border-white/5 bg-[#080808] relative overflow-hidden">
+      <div class="container mx-auto px-6 max-w-7xl relative z-10">
+        <div class="text-center max-w-2xl mx-auto mb-20 fade-in-up">
+          <p class="text-xs uppercase tracking-[0.2em] text-zinc-500 mb-4">Reconhecimento</p>
+          <h2 class="text-4xl md:text-5xl font-light tracking-tight">O que dizem os nossos <span class="font-semibold text-yellow-500">Parceiros</span>.</h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div class="p-8 rounded-3xl bg-zinc-900/40 border border-white/5 fade-in-up">
+            <i data-lucide="quote" class="w-8 h-8 text-yellow-500/20 mb-6"></i>
+            <p class="text-zinc-300 font-light leading-relaxed mb-8 italic">"A transformação digital que a NDN operou na nossa rede foi fenomenal. O website é impressionante e o tráfego quadruplicou."</p>
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center font-bold text-zinc-400">CM</div>
+              <div>
+                <p class="text-white font-medium text-sm">Carlos Matos</p>
+                <p class="text-yellow-500/80 text-xs tracking-wide mt-1">Diretor de Marketing</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-8 rounded-3xl bg-zinc-900/40 border border-white/5 fade-in-up delay-100">
+            <i data-lucide="quote" class="w-8 h-8 text-yellow-500/20 mb-6"></i>
+            <p class="text-zinc-300 font-light leading-relaxed mb-8 italic">"Desde a sinalética no nosso edifício ao design do portal interno. Uma equipa incansável e com um brio profissional acima da média."</p>
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center font-bold text-zinc-400">HF</div>
+              <div>
+                <p class="text-white font-medium text-sm">Helena Fernando</p>
+                <p class="text-yellow-500/80 text-xs tracking-wide flex-grow mt-1">Gestora Operacional</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contactos -->
+    <section id="contactos" class="py-24 relative overflow-hidden bg-[#0A0A0A]">
+      <div class="container mx-auto px-6 max-w-7xl relative z-10">
+        <div class="grid md:grid-cols-2 gap-16">
+          <div class="fade-in-left">
+            <p class="text-xs uppercase tracking-[0.2em] text-zinc-500 mb-4">Iniciar Projeto</p>
+            <h2 class="text-4xl md:text-5xl font-light tracking-tight mb-8">
+              Pronto para <br><span class="font-semibold text-yellow-500">dominar a sua indústria?</span>
+            </h2>
+            <p class="text-zinc-400 mb-12 max-w-md">
+              O crescimento da sua marca em Angola começa aqui. Escolha o serviço e entraremos em contacto consigo.
+            </p>
+
+            <div class="space-y-6">
+              <div class="flex items-center gap-4 text-zinc-300">
+                <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center">
+                  <i data-lucide="map-pin" class="w-5 h-5 text-yellow-500"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium">Mutamba & Zango 3</p>
+                  <p class="text-xs text-zinc-500">Luanda, Angola</p>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-4 text-zinc-300">
+                <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center">
+                  <i data-lucide="phone" class="w-5 h-5 text-yellow-500"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium">+244 954 359 159</p>
+                  <p class="text-xs text-zinc-500">Segunda a Sábado, 08h-18h</p>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-4 text-zinc-300">
+                <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center">
+                  <i data-lucide="mail" class="w-5 h-5 text-yellow-500"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-medium">ndngeral@gmail.com</p>
+                  <p class="text-xs text-zinc-500">Apoio Permanente</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-[#111] border border-white/10 rounded-3xl p-8 md:p-10 fade-in-right">
+            <form class="space-y-6">
+              <div class="grid grid-cols-2 gap-6">
+                <div class="space-y-2">
+                  <label class="text-xs uppercase tracking-widest text-zinc-500">Nome</label>
+                  <input type="text" class="w-full bg-black border border-white/10 rounded-lg p-4 text-white focus:outline-none focus:border-yellow-500 transition-colors" placeholder="Seu nome">
+                </div>
+                <div class="space-y-2">
+                  <label class="text-xs uppercase tracking-widest text-zinc-500">Empresa</label>
+                  <input type="text" class="w-full bg-black border border-white/10 rounded-lg p-4 text-white focus:outline-none focus:border-yellow-500 transition-colors" placeholder="Sua marca">
+                </div>
+              </div>
+              
+              <div class="space-y-2">
+                <label class="text-xs uppercase tracking-widest text-zinc-500">Telefone / WhatsApp</label>
+                <input type="tel" class="w-full bg-black border border-white/10 rounded-lg p-4 text-white focus:outline-none focus:border-yellow-500 transition-colors" placeholder="+244">
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-xs uppercase tracking-widest text-zinc-500">Serviço</label>
+                <select class="w-full bg-black border border-white/10 rounded-lg p-4 text-white focus:outline-none focus:border-yellow-500 transition-colors appearance-none">
+                  <option>Pacote Digital Start (150k Kz)</option>
+                  <option>Pacote Business Pro (450k Kz)</option>
+                  <option>Branding Total</option>
+                  <option>Outro</option>
+                </select>
+              </div>
+
+              <button type="button" class="w-full bg-yellow-500 text-black font-semibold py-4 rounded-lg uppercase tracking-widest text-sm hover:bg-white transition-colors mt-4">
+                Enviar Mensagem
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-8 border-t border-white/10 text-center bg-[#050505]">
+    <p class="text-xs text-zinc-600">
+      &copy; <span id="year"></span> NDN - PRESTAÇÃO DE SERVIÇOS. Todos os direitos reservados. Feito com rigor em Luanda, Angola.
+    </p>
+  </footer>
+
+  <a href="https://wa.me/244954359159" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:scale-110 transition-all z-50">
+    <i data-lucide="message-circle" class="w-7 h-7 mt-0"></i>
+  </a>
+
+  <!-- VANILLA JS LOGIC -->
+  <script>
+    // Initialize Icons
+    lucide.createIcons();
+    
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Image Carousel Slider
+    const heroImages = [
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2000&auto=format&fit=crop", 
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2000&auto=format&fit=crop", 
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2000&auto=format&fit=crop"
+    ];
+    let currentImage = 0;
+    const heroImg = document.getElementById('hero-image');
+    
+    if (heroImg) {
+      setInterval(() => {
+        heroImg.style.opacity = '0';
+        setTimeout(() => {
+          currentImage = (currentImage + 1) % heroImages.length;
+          heroImg.src = heroImages[currentImage];
+          heroImg.style.opacity = '0.35';
+        }, 800);
+      }, 5000);
+    }
+
+    // Scroll Navbar Effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('bg-black/90', 'backdrop-blur-md', 'border-b', 'border-white/10', 'py-4');
+        navbar.classList.remove('bg-transparent', 'py-6');
+      } else {
+        navbar.classList.add('bg-transparent', 'py-6');
+        navbar.classList.remove('bg-black/90', 'backdrop-blur-md', 'border-b', 'border-white/10', 'py-4');
+      }
+    });
+
+    // Mobile Menu Toggle
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      mobileMenu.classList.toggle('flex');
+    });
+
+    // Close Mobile Menu on link click
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('flex');
+      });
+    });
+
+    // Intersection Observer For Animations
+    const observerOptions = { threshold: 0.1, rootMargin: "-50px" };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target); 
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
+</body>
 </html>
-
