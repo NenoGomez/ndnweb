@@ -735,7 +735,7 @@ export default function App() {
                       <Phone className="w-5 h-5 text-yellow-500" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium">+244 9XX XXX XXX</p>
+                      <p className="text-sm font-medium">+244 954 359 159</p>
                       <p className="text-xs text-zinc-500">Segunda - Sábado, 08h às 18h</p>
                     </div>
                   </div>
@@ -745,7 +745,7 @@ export default function App() {
                       <Mail className="w-5 h-5 text-yellow-500" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium">geral@ndnservicos.co.ao</p>
+                      <p className="text-sm font-medium">ndngeral@gmail.com</p>
                       <p className="text-xs text-zinc-500">Apoio Corporativo</p>
                     </div>
                   </div>
@@ -806,7 +806,7 @@ export default function App() {
 
       {/* Floating WhatsApp Button */}
       <a 
-        href="https://wa.me/244900000000" 
+        href="https://wa.me/244954359159" 
         target="_blank" 
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 w-14 h-14 bg-green-500 hover:bg-green-600 text-white rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:scale-110 transition-all z-50"
